@@ -1,6 +1,3 @@
 # Okta Export Tool - System Requirements
 
 ## Runtime Environment
-Node.js >= 18.0.0
-npm >= 8.0.0
-
