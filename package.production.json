@@ -1,0 +1,22 @@
+{
+  "name": "okta-export-production",
+  "version": "1.0.0",
+  "description": "Production deployment for Okta Export Tool",
+  "main": "src/app.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node src/app.js",
+    "dev": "node src/app.js", 
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop okta-export",
+    "pm2:restart": "pm2 restart okta-export",
+    "pm2:logs": "pm2 logs okta-export",
+    "health": "curl -f http://localhost:4000/api/health || exit 1"
+  },
+  "keywords": ["okta", "export", "api", "node.js"],
+  "author": "Your Name",
+  "license": "MIT"
+}

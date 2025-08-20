@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okta Export Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        
+        h1 {
+            color: #212529;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+        
+        .subtitle {
+            color: #6c757d;
+            margin-bottom: 3rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .export-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .export-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+        
+        .card-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .buttons {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            padding: 0.625rem 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            background: white;
+            color: #495057;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            border-color: #0d6efd;
+            color: #0d6efd;
+        }
+        
+        .btn-secondary {
+            border-color: #198754;
+            color: #198754;
+        }
+        
+        .btn-tertiary {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        
+        .btn-all {
+            border-color: #6f42c1;
+            color: #6f42c1;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary:hover {
+            background: #0d6efd;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #198754;
+            color: white;
+        }
+        
+        .btn-tertiary:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-all:hover {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .info {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+            margin-top: 3rem;
+            text-align: left;
+        }
+        
+        .info h3 {
+            color: #495057;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .info ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: #6c757d;
+        }
+        
+        .info li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .info strong {
+            color: #495057;
+        }
+        
+        .status {
+            margin: 1.5rem 0;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .status.success {
+            background: #d1e7dd;
+            color: #0a3622;
+            border: 1px solid #a3cfbb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #58151c;
+            border: 1px solid #f1aeb5;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .export-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">📊</div>
+        <h1>Okta Export Tool</h1>
+        <p class="subtitle">Download comprehensive reports from your Okta organization in multiple formats</p>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="cards-container">
+            <div class="export-card">
+                <span class="card-icon">👥</span>
+                <h3 class="card-title">Users</h3>
+                <p class="card-description">Export complete user profiles, status, login history, and custom attributes</p>
+                <div class="card-buttons">
+                    <a class="btn btn-primary" href="/api/export/users?format=json" download="users.json" onclick="updateStatus('Downloading Users (JSON)...')">
+                        � Download JSON
+                    </a>
+                    <a class="btn btn-primary" href="/api/export/users?format=csv" download="users.csv" onclick="updateStatus('Downloading Users (CSV)...')">
+                        � Download CSV
+                    </a>
+                    <a class="btn btn-primary" href="/api/export/users?format=excel" download="users.xlsx" onclick="updateStatus('Downloading Users (Excel)...')">
+                        � Download Excel
+                    </a>
+                </div>
+            </div>
+            
+            <div class="export-card">
+                <span class="card-icon">🏢</span>
+                <h3 class="card-title">Groups</h3>
+                <p class="card-description">Export group information, memberships, and complete member lists</p>
+                <div class="card-buttons">
+                    <a class="btn btn-secondary" href="/api/export/groups?format=json" download="groups.json" onclick="updateStatus('Downloading Groups (JSON)...')">
+                        📄 Download JSON
+                    </a>
+                    <a class="btn btn-secondary" href="/api/export/groups?format=csv" download="groups.csv" onclick="updateStatus('Downloading Groups (CSV)...')">
+                        📊 Download CSV
+                    </a>
+                    <a class="btn btn-secondary" href="/api/export/groups?format=excel" download="groups.xlsx" onclick="updateStatus('Downloading Groups (Excel)...')">
+                        📈 Download Excel
+                    </a>
+                </div>
+            </div>
+            
+            <div class="export-card">
+                <span class="card-icon">📱</span>
+                <h3 class="card-title">Applications</h3>
+                <p class="card-description">Export application configurations, settings, and user assignments</p>
+                <div class="card-buttons">
+                    <a class="btn btn-tertiary" href="/api/export/applications?format=json" download="applications.json" onclick="updateStatus('Downloading Applications (JSON)...')">
+                        � Download JSON
+                    </a>
+                    <a class="btn btn-tertiary" href="/api/export/applications?format=csv" download="applications.csv" onclick="updateStatus('Downloading Applications (CSV)...')">
+                        📊 Download CSV
+                    </a>
+                    <a class="btn btn-tertiary" href="/api/export/applications?format=excel" download="applications.xlsx" onclick="updateStatus('Downloading Applications (Excel)...')">
+                        📈 Download Excel
+                    </a>
+                </div>
+            </div>
+            
+            <div class="export-card">
+                <span class="card-icon">🌐</span>
+                <h3 class="card-title">Complete Export</h3>
+                <p class="card-description">Comprehensive export with all data types and summary statistics</p>
+                <div class="card-buttons">
+                    <a class="btn btn-all" href="/api/export/all?format=json" download="all-data.json" onclick="updateStatus('Downloading Complete Export (JSON)...')">
+                        📄 Download JSON
+                    </a>
+                    <a class="btn btn-all" href="/api/export/all?format=csv" download="all-data.csv" onclick="updateStatus('Downloading Complete Export (CSV)...')">
+                        📊 Download CSV
+                    </a>
+                    <a class="btn btn-all" href="/api/export/all?format=excel" download="all-data.xlsx" onclick="updateStatus('Downloading Complete Export (Excel)...')">
+                        📈 Download Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info">
+            <h3>📋 What's Included:</h3>
+            <ul>
+                <li><strong>Users:</strong> Complete user profiles, status, login history, and custom attributes</li>
+                <li><strong>Groups:</strong> Group information, memberships, and member lists</li>
+                <li><strong>Applications:</strong> Application configurations, settings, and assignments</li>
+                <li><strong>All Data:</strong> Comprehensive export with summary statistics</li>
+            </ul>
+            
+            <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e9ecef;">
+                <a href="/settings.html" style="color: #6c757d; text-decoration: none; font-size: 0.9rem;">
+                    ⚙️ Configuration Settings
+                </a>
+                <span style="margin: 0 1rem; color: #dee2e6;">|</span>
+                <a href="/simple.html" style="color: #6c757d; text-decoration: none; font-size: 0.9rem;">
+                    📋 Simple Export Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status success';
+            statusDiv.style.display = 'block';
+            
+            // Hide status after 3 seconds
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Check API health on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    console.log('✅ API is healthy and ready for exports');
+                } else {
+                    const statusDiv = document.getElementById('status');
+                    statusDiv.textContent = '⚠️ API health check failed - exports may not work';
+                    statusDiv.className = 'status error';
+                    statusDiv.style.display = 'block';
+                }
+            } catch (error) {
+                const statusDiv = document.getElementById('status');
+                statusDiv.textContent = '⚠️ Cannot connect to API - make sure server is running';
+                statusDiv.className = 'status error';
+                statusDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

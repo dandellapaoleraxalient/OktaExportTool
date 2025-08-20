@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Export</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        #log { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; background: #f5f5f5; }
+        .error { color: red; }
+        .success { color: green; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Export Debug Tool</h1>
+    <p>This will help us debug why the export buttons aren't working.</p>
+    
+    <button onclick="testHealth()">Test API Health</button>
+    <button onclick="testExport()">Test Export Users</button>
+    <button onclick="testDirectDownload()">Test Direct Download</button>
+    <button onclick="clearLog()">Clear Log</button>
+    
+    <h3>Debug Log:</h3>
+    <div id="log"></div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        async function testHealth() {
+            log('Testing API health...', 'info');
+            try {
+                const response = await fetch('/api/health');
+                log(`Health response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const data = await response.text();
+                log(`Health response: ${data}`, 'info');
+                
+                if (response.ok) {
+                    log('✅ API is healthy', 'success');
+                } else {
+                    log('❌ API health check failed', 'error');
+                }
+            } catch (error) {
+                log(`❌ Health check error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testExport() {
+            log('Testing export API...', 'info');
+            try {
+                log('Making fetch request to /api/export/users?format=json', 'info');
+                const response = await fetch('/api/export/users?format=json');
+                
+                log(`Export response status: ${response.status}`, 'info');
+                log(`Export response headers:`, 'info');
+                for (const [key, value] of response.headers.entries()) {
+                    log(`  ${key}: ${value}`, 'info');
+                }
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`❌ Export failed: ${errorText}`, 'error');
+                    return;
+                }
+                
+                log('✅ Export API responded successfully', 'success');
+                log('Converting response to blob...', 'info');
+                
+                const blob = await response.blob();
+                log(`Blob size: ${blob.size} bytes`, 'info');
+                
+                if (blob.size === 0) {
+                    log('❌ Blob is empty', 'error');
+                    return;
+                }
+                
+                log('✅ Export test successful - data received', 'success');
+                
+            } catch (error) {
+                log(`❌ Export test error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testDirectDownload() {
+            log('Testing direct download...', 'info');
+            try {
+                const response = await fetch('/api/export/users?format=json');
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`❌ Download failed: ${errorText}`, 'error');
+                    return;
+                }
+                
+                const blob = await response.blob();
+                log(`Creating download for blob of size: ${blob.size}`, 'info');
+                
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'debug-export.json';
+                
+                log('Triggering download...', 'info');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                log('✅ Download triggered successfully', 'success');
+                
+            } catch (error) {
+                log(`❌ Download error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            log('🚀 Debug page loaded', 'info');
+            log('Browser: ' + navigator.userAgent, 'info');
+            testHealth();
+        });
+    </script>
+</body>
+</html>

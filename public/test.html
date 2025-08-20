@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Okta Export</title>
+</head>
+<body>
+    <h1>Test Export</h1>
+    <button id="testBtn">Test Export Users</button>
+    <div id="status"></div>
+    
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '🔄 Testing export...';
+            
+            try {
+                console.log('Starting export test...');
+                const response = await fetch('/api/export/users?format=json');
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    statusDiv.innerHTML = '❌ Error: ' + errorText;
+                    return;
+                }
+                
+                const blob = await response.blob();
+                console.log('Blob size:', blob.size);
+                
+                // Create download
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'test-export.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                statusDiv.innerHTML = '✅ Export successful!';
+                
+            } catch (error) {
+                console.error('Export failed:', error);
+                statusDiv.innerHTML = '❌ Export failed: ' + error.message;
+            }
+        });
+        
+        // Test API health
+        fetch('/api/health')
+            .then(r => r.json())
+            .then(data => console.log('API health:', data))
+            .catch(e => console.error('API health failed:', e));
+    </script>
+</body>
+</html>

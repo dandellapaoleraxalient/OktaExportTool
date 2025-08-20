@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Export Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .btn { padding: 10px 20px; margin: 10px; background: #4CAF50; color: white; text-decoration: none; border-radius: 5px; display: inline-block; }
+        .btn:hover { background: #45a049; }
+        .status { margin: 20px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Export Test</h1>
+    <p>These are direct links to download your Okta data:</p>
+    
+    <a href="/api/export/users?format=json" class="btn" download="users.json">📥 Download Users (JSON)</a>
+    <a href="/api/export/users?format=csv" class="btn" download="users.csv">📥 Download Users (CSV)</a>
+    <a href="/api/export/users?format=excel" class="btn" download="users.xlsx">📥 Download Users (Excel)</a>
+    
+    <br><br>
+    
+    <a href="/api/export/groups?format=json" class="btn" download="groups.json">👥 Download Groups (JSON)</a>
+    <a href="/api/export/applications?format=json" class="btn" download="apps.json">📱 Download Apps (JSON)</a>
+    <a href="/api/export/all?format=excel" class="btn" download="all-data.xlsx">🌐 Download All Data (Excel)</a>
+    
+    <div class="status">
+        <h3>Test Instructions:</h3>
+        <ol>
+            <li>Click any download button above</li>
+            <li>The file should download automatically</li>
+            <li>Check your Downloads folder</li>
+        </ol>
+        
+        <p><strong>API Health Test:</strong> <a href="/api/health" target="_blank">Click here to test API</a></p>
+    </div>
+    
+    <script>
+        // Simple test that just logs to console
+        console.log('Page loaded successfully');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Button clicked:', this.href);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

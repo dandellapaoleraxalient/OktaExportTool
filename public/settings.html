@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okta Export Tool - Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        
+        h1 {
+            color: #212529;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .label-description {
+            font-size: 0.875rem;
+            color: #6c757d;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+        
+        .btn-primary:hover {
+            background: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #6c757d;
+            border-color: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-test {
+            background: #198754;
+            color: white;
+            border-color: #198754;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .btn-test:hover {
+            background: #157347;
+            border-color: #146c43;
+        }
+        
+        .status {
+            margin: 1rem 0;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .status.success {
+            background: #d1e7dd;
+            color: #0a3622;
+            border: 1px solid #a3cfbb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #58151c;
+            border: 1px solid #f1aeb5;
+        }
+        
+        .status.info {
+            background: #cff4fc;
+            color: #055160;
+            border: 1px solid #9eeaf9;
+        }
+        
+        .current-config {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .current-config h3 {
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .config-label {
+            color: #6c757d;
+        }
+        
+        .config-value {
+            color: #212529;
+            font-family: monospace;
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .nav-links a {
+            color: #0d6efd;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">⚙️</div>
+            <h1>Settings</h1>
+            <p class="subtitle">Configure your Okta connection settings</p>
+        </div>
+        
+        <div class="current-config" id="currentConfig">
+            <h3>Current Configuration</h3>
+            <div id="configItems">
+                <div class="config-item">
+                    <span class="config-label">Status:</span>
+                    <span class="config-value">Click "🔄 Reload" to load current settings</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status" id="status"></div>
+        
+        <form id="settingsForm">
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="oktaDomain">
+                        Okta Domain
+                        <div class="label-description">Your Okta organization domain (e.g., company.okta.com)</div>
+                    </label>
+                    <input type="text" id="oktaDomain" name="oktaDomain" placeholder="your-org.okta.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="oktaToken">
+                        Okta API Token
+                        <div class="label-description">Your Okta SSWS API token with read permissions</div>
+                    </label>
+                    <input type="password" id="oktaToken" name="oktaToken" placeholder="Enter your API token" required>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" class="btn btn-test" onclick="testConnection()">🔍 Test Connection</button>
+                <br><br>
+                <button type="submit" class="btn btn-primary">💾 Save Settings</button>
+                <button type="button" class="btn btn-secondary" onclick="loadCurrentSettings()">🔄 Reload</button>
+            </div>
+        </form>
+        
+        <div class="nav-links">
+            <a href="/">← Back to Export Tool</a>
+            <a href="/simple.html">Simple Export Page</a>
+        </div>
+    </div>
+
+    <script>
+        // Load current settings when page loads
+        window.addEventListener('load', loadCurrentSettings);
+
+        async function loadCurrentSettings() {
+            try {
+                console.log('Loading current settings...');
+                
+                // Check if we have server-injected values
+                if (typeof CURRENT_DOMAIN !== 'undefined') {
+                    console.log('Using server-injected configuration');
+                    document.getElementById('oktaDomain').value = CURRENT_DOMAIN;
+                    document.getElementById('oktaToken').value = CURRENT_TOKEN_SET ? '••••••••••••••••' : '';
+                    showStatus('✅ Configuration loaded successfully', 'success');
+                    return;
+                }
+                
+                // Fallback to API call
+                const response = await fetch('/api/config');
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (response.ok) {
+                    const config = await response.json();
+                    console.log('Config data:', config);
+                    
+                    // Update form fields
+                    document.getElementById('oktaDomain').value = config.oktaDomain || '';
+                    document.getElementById('oktaToken').value = config.oktaToken ? '••••••••••••••••' : '';
+                    
+                    // Update current config display
+                    const configItems = document.getElementById('configItems');
+                    configItems.innerHTML = `
+                        <div class="config-item">
+                            <span class="config-label">Okta Domain:</span>
+                            <span class="config-value">${config.oktaDomain || 'Not set'}</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-label">API Token:</span>
+                            <span class="config-value">${config.oktaToken ? '••••••••••••••••' : 'Not set'}</span>
+                        </div>
+                        <div class="config-item">
+                            <span class="config-label">Status:</span>
+                            <span class="config-value" style="color: ${config.oktaDomain && config.oktaToken ? '#198754' : '#dc3545'}">
+                                ${config.oktaDomain && config.oktaToken ? '✓ Configured' : '⚠ Incomplete'}
+                            </span>
+                        </div>
+                    `;
+                    showStatus('✅ Configuration loaded successfully', 'success');
+                } else {
+                    console.error('Failed to load settings, status:', response.status);
+                    showStatus('Failed to load current settings - Status: ' + response.status, 'error');
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                showStatus('Error loading settings: ' + error.message, 'error');
+            }
+        }
+
+        async function testConnection() {
+            const domain = document.getElementById('oktaDomain').value.trim();
+            const token = document.getElementById('oktaToken').value.trim();
+            
+            if (!domain || !token || token === '••••••••••••••••') {
+                showStatus('Please enter both domain and token before testing', 'error');
+                return;
+            }
+            
+            showStatus('Testing connection...', 'info');
+            
+            try {
+                const response = await fetch('/api/test-config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        oktaDomain: domain,
+                        oktaToken: token
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showStatus(`✅ Connection successful! Found ${result.userCount} users in your Okta org`, 'success');
+                } else {
+                    showStatus(`❌ Connection failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Connection test failed: ' + error.message, 'error');
+            }
+        }
+
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const domain = document.getElementById('oktaDomain').value.trim();
+            const token = document.getElementById('oktaToken').value.trim();
+            
+            if (!domain || !token) {
+                showStatus('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (token === '••••••••••••••••') {
+                showStatus('Please enter a new token or reload to keep current token', 'error');
+                return;
+            }
+            
+            showStatus('Saving settings...', 'info');
+            
+            try {
+                const response = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        oktaDomain: domain,
+                        oktaToken: token
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showStatus('✅ Settings saved successfully! You may need to restart the server.', 'success');
+                    setTimeout(loadCurrentSettings, 1000);
+                } else {
+                    showStatus('❌ Failed to save settings: ' + result.error, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Error saving settings: ' + error.message, 'error');
+            }
+        });
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
