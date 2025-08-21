@@ -4,11 +4,11 @@
   "description": "Node.js application to export Okta data and generate reports",
   "main": "src/app.js",
   "scripts": {
-    "start": "NODE_ENV=production node src/app.js",
+    "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "jest",
     "setup": "node setup.js",
-    "prod": "NODE_ENV=production node src/app.js",
+    "prod": "node src/app.js",
     "pm2:start": "pm2 start ecosystem.config.js --env production",
     "pm2:stop": "pm2 stop okta-export",
     "pm2:restart": "pm2 restart okta-export",

@@ -1,3 +1,56 @@
 # Okta Export Tool - System Requirements
 
 ## Runtime Environment
+Node.js >= 18.0.0
+npm >= 8.0.0
+
+## Operating System Support
+Windows 10 or later
+macOS 10.15 (Catalina) or later
+Ubuntu 18.04 LTS or equivalent
+CentOS 7+ / RHEL 7+ / Debian 9+
+
+## Hardware Minimum
+RAM: 512 MB (2 GB recommended)
+Storage: 100 MB + export file space
+CPU: Any modern x64 processor
+
+## Network Requirements
+Internet connection for Okta API access
+Outbound HTTPS (port 443) to Okta domain
+Application port (default 4000, configurable)
+
+## Okta Prerequisites
+Valid Okta organization (any edition)
+SSWS API token with permissions:
+- okta.users.read
+- okta.groups.read  
+- okta.apps.read
+
+## Browser Requirements (Web UI)
+Modern browser with JavaScript enabled:
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## Installation Commands
+# Install Node.js from nodejs.org or package manager
+# Verify installation:
+node --version  # Should show v18.0.0+
+npm --version   # Should show 8.0.0+
+
+# Install application:
+npm install
+
+# Configure environment:
+cp .env.example .env
+# Edit .env with your Okta credentials
+
+# Start application:
+npm start
+
+## Access Points
+Web Interface: http://localhost:4000
+Settings Page: http://localhost:4000/settings.html
+API Health: http://localhost:4000/api/health
